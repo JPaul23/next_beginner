@@ -16,16 +16,26 @@ export default function Car({ car }) {
     )
 }
 
-export async function getStaticProps({ params }) {
+/* does everything as the static-generation function but on every request instead on build time. */
+export async function getServerSideProps({ params }) {
+    const req = await fetch(`http://localhost:3000/${params.id}.json`);
+    const data = await req.json();
+
+    return {
+        props: { car: data }
+    };
+}
+
+/* export async function getStaticProps({ params }) {
     const req = await fetch(`http://localhost:3000/${params.id}.json`);
     const data = await req.json();
 
     return {
         props: { car: data }
     }
-}
+} */
 
-export async function getStaticPaths() {
+/* export async function getStaticPaths() {
     const req = await fetch(`http://localhost:3000/cars.json`);
     const data = await req.json();
 
@@ -38,4 +48,4 @@ export async function getStaticPaths() {
         paths,
         fallback: false
     };
-}
+} */
